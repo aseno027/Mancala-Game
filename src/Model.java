@@ -112,13 +112,35 @@ public class Model {
 		
 		int lastAddedPitNum = addedPitNum -1;
 		
+		// if the last added pit was mancala
 		if(gameStatus == 1 && lastAddedPitNum == p1Mancala) {
 			// p1 replay -> no player change
+			this.notifyToListeners();
+			return;
 		}
 		if(gameStatus == 2 && lastAddedPitNum == p2Mancala) {
 			// p2 replay -> no player change
+			this.notifyToListeners();
+			return;
 		}
 
+		// if the last added pit was empty
+		// get opposite's stone and my stone into the mancala
+		if(gameStatus == 1 && lastAddedPitNum < 7 && pits[lastAddedPitNum] == 1) {
+			pits[p1Mancala] += pits[getOppositePit(lastAddedPitNum)] + pits[lastAddedPitNum];
+			pits[getOppositePit(lastAddedPitNum)] = 0;
+			pits[lastAddedPitNum] = 0;
+			this.notifyToListeners();
+			return;
+		} else if(gameStatus == 2 && lastAddedPitNum > 7 && pits[lastAddedPitNum] == 1) {
+			pits[p2Mancala] += pits[getOppositePit(lastAddedPitNum)] + pits[lastAddedPitNum];
+			pits[getOppositePit(lastAddedPitNum)] = 0;
+			pits[lastAddedPitNum] = 0;
+			this.notifyToListeners();
+			return;			
+		}
+		
+		
 		this.notifyToListeners();
 	}
 	
@@ -136,6 +158,14 @@ public class Model {
 		return pits[pitNum];
 	}
 	
+	public int getP1MancalaStones() {
+		return pits[p1Mancala];
+	}
+	
+	public int getP2MancalaStones() {
+		return pits[p2Mancala];
+	}
+	
 	/**
 	 * Accessor: Check whether the pit is empty or not
 	 * @param pitNum
@@ -151,15 +181,15 @@ public class Model {
 	}
 	
 	/**
-	 * Accessor: get opposite pit's stones number
+	 * Accessor: get opposite pit
 	 * @param currentPit
 	 * @return
 	 */
-	public int getOppositePitStones(int currentPit) {
+	public int getOppositePit(int currentPit) {
 		int oppositePitNum;
 		if(currentPit != p1Mancala && currentPit != p2Mancala) {
 			oppositePitNum = 14 - currentPit;
-			return pits[oppositePitNum];
+			return oppositePitNum;
 		} else {
 			System.out.println("getOppositePitStones() method error");
 			return 0;
