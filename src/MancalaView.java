@@ -12,7 +12,7 @@ import javax.swing.event.ChangeListener;
 
 public class MancalaView extends JFrame implements ChangeListener {
 
-	private MancalaModel mancalaModel;
+	private Model mancalaModel;
 	private int numStones;
 	private int style;
 
