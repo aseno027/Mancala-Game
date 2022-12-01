@@ -79,14 +79,47 @@ public class Model {
 	 * @param pitNum
 	 */
 	public void moveStones(int pitNum) {
+		// error case
 		if(pitNum == p1Mancala || pitNum == p2Mancala) {
 			System.out.println("You cannot move Mancala");
+			this.notifyToListeners();
 			return;
 		}
-		int stonesInPit = pits[pitNum];
-		for(int i = 0; i < stonesInPit; i++) {
-			
+		if(gameStatus == 1 && pitNum > 7) {
+			System.out.println("Player1 cannot touch Player2's pits");
+			this.notifyToListeners();
+			return;
 		}
+		if(gameStatus == 2 && pitNum < 7) {
+			System.out.println("Player1 cannot touch Player2's pits");
+			this.notifyToListeners();
+			return;
+		}
+		
+
+		int stonesInPit = pits[pitNum];
+		// picked pit will be empty
+		pits[pitNum] = 0;
+		
+		// other pits will be increased
+		int addedPitNum = pitNum + 1;
+		while(stonesInPit > 0) {
+			
+			pits[addedPitNum % 14] = pits[addedPitNum % 14] + 1;
+			addedPitNum++;
+			stonesInPit--;
+		}
+		
+		int lastAddedPitNum = addedPitNum -1;
+		
+		if(gameStatus == 1 && lastAddedPitNum == p1Mancala) {
+			// p1 replay -> no player change
+		}
+		if(gameStatus == 2 && lastAddedPitNum == p2Mancala) {
+			// p2 replay -> no player change
+		}
+
+		this.notifyToListeners();
 	}
 	
 	
