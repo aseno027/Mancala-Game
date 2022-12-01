@@ -1,5 +1,12 @@
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -83,7 +90,26 @@ public class Model {
 	public void moveStones(int pitNum) {
 		// error case
 		if(pitNum == p1Mancala || pitNum == p2Mancala) {
-			System.out.println("You cannot move Mancala");
+			// Frame
+			JFrame errorFrame = new JFrame();
+			errorFrame.setSize(600, 125);
+			errorFrame.setVisible(true);
+			errorFrame.setLayout(new BorderLayout());
+			errorFrame.setTitle("Incorrect Input");
+						
+			//Label
+			JLabel warningLabel = new JLabel("You cannot move Mancala");
+			warningLabel.setFont(new Font("Verdana", Font.PLAIN, 20));
+			errorFrame.add(warningLabel, BorderLayout.CENTER);
+						
+			//Button
+			JButton okayButton = new JButton("Okay");
+			okayButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					errorFrame.dispose();
+				}
+			});
+						errorFrame.add(okayButton, BorderLayout.SOUTH);
 			this.notifyToListeners();
 			return;
 		}
