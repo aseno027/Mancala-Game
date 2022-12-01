@@ -1,12 +1,5 @@
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -58,16 +51,6 @@ public class Model {
 	}
 	
 	/**
-	 * Mutator: remove stones from the pit
-	 * @param pitNum
-	 * @param stoneNum
-	 */
-	public void removeStones(int pitNum, int stoneNum) {
-		pits[pitNum] = pits[pitNum] - stoneNum;
-		this.notifyToListeners();
-	}
-	
-	/**
 	 * Mutator: change the game player
 	 */
 	public void changePlayer() {
@@ -80,51 +63,46 @@ public class Model {
 		this.notifyToListeners();
 	}
 	
+	/**
+	 * Mutator: remove stones from the pit
+	 * @param pitNum
+	 * @param stoneNum
+	 */
+	public void removeStones(int pitNum, int stoneNum) {
+		pits[pitNum] = pits[pitNum] - stoneNum;
+		this.notifyToListeners();
+	}
+	
+
+	
 	
 	/**
 	 * Mutator: move the clicked pit's stones to counterclockwise
-	 * @param pitNum
+	 * @param pitNum index of pit
 	 * 
 	 * @return -> should I change it to Integer?(0 = error) (1 = normal ending) (2 = last was mancala) (3 = take opposite stones)
 	 */
-	public void moveStones(int pitNum) {
+	public int moveStones(int pitNum) {
 		// error case
 		if(pitNum == p1Mancala || pitNum == p2Mancala) {
-			// Frame
-			JFrame errorFrame = new JFrame();
-			errorFrame.setSize(600, 125);
-			errorFrame.setVisible(true);
-			errorFrame.setLayout(new BorderLayout());
-			errorFrame.setTitle("Incorrect Input");
-						
-			//Label
-			JLabel warningLabel = new JLabel("You cannot move Mancala");
-			warningLabel.setFont(new Font("Verdana", Font.PLAIN, 20));
-			errorFrame.add(warningLabel, BorderLayout.CENTER);
-						
-			//Button
-			JButton okayButton = new JButton("Okay");
-			okayButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					errorFrame.dispose();
-				}
-			});
-						errorFrame.add(okayButton, BorderLayout.SOUTH);
+			System.out.println("You cannot move Mancala");
 			this.notifyToListeners();
-			return;
+			return 0;
 		}
 		if(gameStatus == 1 && pitNum > 7) {
 			System.out.println("Player1 cannot touch Player2's pits");
 			this.notifyToListeners();
-			return;
+			return 0;
 		}
 		if(gameStatus == 2 && pitNum < 7) {
 			System.out.println("Player1 cannot touch Player2's pits");
 			this.notifyToListeners();
-			return;
+			return 0;
 		}
 		
 
+		
+		
 		int stonesInPit = pits[pitNum];
 		// picked pit will be empty
 		pits[pitNum] = 0;
@@ -138,18 +116,18 @@ public class Model {
 			stonesInPit--;
 		}
 		
-		int lastAddedPitNum = addedPitNum -1;
+		int lastAddedPitNum = addedPitNum - 1;
 		
 		// if the last added pit was mancala
 		if(gameStatus == 1 && lastAddedPitNum == p1Mancala) {
 			// p1 replay -> no player change
 			this.notifyToListeners();
-			return;
+			return 2;
 		}
 		if(gameStatus == 2 && lastAddedPitNum == p2Mancala) {
 			// p2 replay -> no player change
 			this.notifyToListeners();
-			return;
+			return 2;
 		}
 
 		// if the last added pit was empty
@@ -159,24 +137,70 @@ public class Model {
 			pits[getOppositePit(lastAddedPitNum)] = 0;
 			pits[lastAddedPitNum] = 0;
 			this.notifyToListeners();
-			return;
+			return 3;
 		} else if(gameStatus == 2 && lastAddedPitNum > 7 && pits[lastAddedPitNum] == 1) {
 			pits[p2Mancala] += pits[getOppositePit(lastAddedPitNum)] + pits[lastAddedPitNum];
 			pits[getOppositePit(lastAddedPitNum)] = 0;
 			pits[lastAddedPitNum] = 0;
 			this.notifyToListeners();
-			return;			
+			return 3;			
 		}
 		
 		// normal turn ended normally
 		this.notifyToListeners();
-		return;
+		return 1;
 	}
 	
 	
+	/**
+	 * Accessor
+	 * 
+	 * @return	true	game ended
+	 * 			false	game not ended
+	 */
+	public boolean gameEndIndicator() {
+		boolean p1PitsEmpty = true;		
+		boolean p2PitsEmpty = true;
+		
+		if(gameStatus == 1) {
+			for(int i = 1; i < p1Mancala; i++) {
+				if(pits[i] > 0) {
+					p1PitsEmpty = false;
+				}
+			}
+		}
+		if(gameStatus == 2) {	
+			for(int i = 8; i < 14; i++) {
+				if(pits[i] > 0) {
+					p2PitsEmpty = false;
+				}
+			}
+		}
+		
+		if(p1PitsEmpty || p2PitsEmpty) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	
-	
+	/**
+	 * Accessor
+	 * 
+	 * @return	0	draw
+	 * 			1	p1 win
+	 * 			2	p2 win
+	 */
+	public int winnerIndicator() {
+		if(pits[p1Mancala] > pits[p2Mancala]) {
+			return 1;
+		} else if(pits[p1Mancala] < pits[p2Mancala]) {
+			return 2;
+		} else {
+			return 0;
+		}
+	}
 	
 	/**
 	 * Accessor: stones in the pit
@@ -231,5 +255,7 @@ public class Model {
 	public int getState() {
 		return this.gameStatus;
 	}
+	
+	
 	
 }
