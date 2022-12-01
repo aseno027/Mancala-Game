@@ -77,6 +77,8 @@ public class Model {
 	/**
 	 * Mutator: move the clicked pit's stones to counterclockwise
 	 * @param pitNum
+	 * 
+	 * @return -> should I change it to Integer?(0 = error) (1 = normal ending) (2 = last was mancala) (3 = take opposite stones)
 	 */
 	public void moveStones(int pitNum) {
 		// error case
@@ -140,8 +142,9 @@ public class Model {
 			return;			
 		}
 		
-		
+		// normal turn ended normally
 		this.notifyToListeners();
+		return;
 	}
 	
 	
