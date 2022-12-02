@@ -3,12 +3,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.geom.*;
 import javax.swing.*;
 
-
 //CONCRETE STRATEGY
-public class StandardBoard implements MancalaBoard{
+public class StandardBoard implements MancalaBoard {
 	private int x;
 	private int y;
 	private int width;
@@ -22,40 +22,33 @@ public class StandardBoard implements MancalaBoard{
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		
-		JFrame boardFrame = new JFrame();
-		BorderLayout layout = new BorderLayout(-10,-10);
-		boardFrame.setLayout(layout);
-		
-		
-		JPanel aSquares = new JPanel(); //South
-		JPanel bSquares = new JPanel(); //North
-		JPanel squareLabels = new JPanel(); //Center
-		JPanel mancalaA = new JPanel(); //East
-		mancalaA.setLayout(new BorderLayout());
-		JPanel mancalaB = new JPanel(); //West
 
-		mancalaB.setLayout(new BorderLayout());
-		
-		boardFrame.add(aSquares, BorderLayout.SOUTH);
-		boardFrame.add(bSquares, BorderLayout.NORTH);
-		boardFrame.add(squareLabels, BorderLayout.CENTER);
+		JFrame boardFrame = new JFrame();
+		BorderLayout layout = new BorderLayout();
+		boardFrame.setLayout(layout);
+
+		// JPanel aSquares = new JPanel(); //South
+		// JPanel bSquares = new JPanel(); //North
+		// JPanel squareLabels = new JPanel(); //Center
+		JPanel mancalaA = new JPanel(new BorderLayout()); // East
+		JPanel mancalaB = new JPanel(new BorderLayout()); // West
+
+		// mancalaB.setLayout(new GridLayout());
+
+		JPanel centerBoard = new JPanel(new GridLayout(4, 6));
+		// boardFrame.add(aSquares, BorderLayout.SOUTH);
+		// boardFrame.add(bSquares, BorderLayout.NORTH);
+
+		// boardFrame.add(squareLabels, BorderLayout.CENTER);
 		boardFrame.add(mancalaA, BorderLayout.EAST);
 		boardFrame.add(mancalaB, BorderLayout.WEST);
-		
-		
+		boardFrame.add(centerBoard, BorderLayout.CENTER);
+
 		boardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		boardFrame.setTitle("Mancala Board");
-		boardFrame.setSize(1000,500);
+		boardFrame.setSize(1000, 500);
 		boardFrame.setVisible(true);
-		
-		JLabel label = new JLabel("", SwingConstants.CENTER);
-		label.setFont(new Font("Verdana", Font.PLAIN, 28));
-		label.setText("<html><pre>B6   B5   B4   B3   B2   B1<br/><br/><br/>"
-				+ "<br/><br/><br/>A1   A2   A3   A4   A5   A6<pre><html>");
-		squareLabels.add(label);
-		
-		
+
 		RoundButton pitA1 = new RoundButton(null);
 		RoundButton pitA2 = new RoundButton(null);
 		RoundButton pitA3 = new RoundButton(null);
@@ -70,37 +63,72 @@ public class StandardBoard implements MancalaBoard{
 		RoundButton pitB6 = new RoundButton(null);
 		RoundButton trenchA = new RoundButton(null);
 		RoundButton trenchB = new RoundButton(null);
-		
-		pitA1.setPreferredSize(new Dimension(75,75));
-		pitA2.setPreferredSize(new Dimension(75,75));
-		pitA3.setPreferredSize(new Dimension(75,75));
-		pitA4.setPreferredSize(new Dimension(75,75));
-		pitA5.setPreferredSize(new Dimension(75,75));
-		pitA6.setPreferredSize(new Dimension(75,75));
-		pitB1.setPreferredSize(new Dimension(75,75));
-		pitB2.setPreferredSize(new Dimension(75,75));
-		pitB3.setPreferredSize(new Dimension(75,75));
-		pitB4.setPreferredSize(new Dimension(75,75));
-		pitB5.setPreferredSize(new Dimension(75,75));
-		pitB6.setPreferredSize(new Dimension(75,75));
-		trenchA.setPreferredSize(new Dimension(75,150));
-		trenchB.setPreferredSize(new Dimension(75,150));
-		
-		
-		aSquares.add(pitA1);
-		aSquares.add(pitA2);
-		aSquares.add(pitA3);
-		aSquares.add(pitA4);
-		aSquares.add(pitA5);
-		aSquares.add(pitA6);
-		
-		bSquares.add(pitB1);
-		bSquares.add(pitB2);
-		bSquares.add(pitB3);
-		bSquares.add(pitB4);
-		bSquares.add(pitB5);
-		bSquares.add(pitB6);
-		
+		pitA1.setPreferredSize(new Dimension(75, 75));
+		pitA2.setPreferredSize(new Dimension(75, 75));
+		pitA3.setPreferredSize(new Dimension(75, 75));
+		pitA4.setPreferredSize(new Dimension(75, 75));
+		pitA5.setPreferredSize(new Dimension(75, 75));
+		pitA6.setPreferredSize(new Dimension(75, 75));
+		pitB1.setPreferredSize(new Dimension(75, 75));
+		pitB2.setPreferredSize(new Dimension(75, 75));
+		pitB3.setPreferredSize(new Dimension(75, 75));
+		pitB4.setPreferredSize(new Dimension(75, 75));
+		pitB5.setPreferredSize(new Dimension(75, 75));
+		pitB6.setPreferredSize(new Dimension(75, 75));
+		trenchA.setPreferredSize(new Dimension(150, 150));
+		trenchB.setPreferredSize(new Dimension(150, 150));
+
+		JLabel label;
+		centerBoard.add(pitA1);
+		centerBoard.add(pitA2);
+		centerBoard.add(pitA3);
+		centerBoard.add(pitA4);
+		centerBoard.add(pitA5);
+		centerBoard.add(pitA6);
+		label = new JLabel("B6", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("B5", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("B4", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("B3", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("B2", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("B1", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+
+		label = new JLabel("A1", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("A2", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("A3", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("A4", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("A5", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("A6", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		centerBoard.add(pitB1);
+		centerBoard.add(pitB2);
+		centerBoard.add(pitB3);
+		centerBoard.add(pitB4);
+		centerBoard.add(pitB5);
+		centerBoard.add(pitB6);
+
 		mancalaA.add(trenchA, BorderLayout.CENTER);
 		mancalaB.add(trenchB, BorderLayout.CENTER);
 	}
@@ -136,6 +164,6 @@ public class StandardBoard implements MancalaBoard{
 //		g2.draw(trenchA);
 //		g2.draw(trenchB);
 //		g2.draw(board);
-		
+
 	}
 }
