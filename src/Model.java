@@ -11,10 +11,12 @@ public class Model {
 	private int[] previousPits;// used for undo
 	private final int p1Mancala = 7;
 	private final int p2Mancala = 0;
+	private int prevNumUndos;
 	private int numUndos;
 	private int initialStoneNum;
 	private boolean canUndo;
 	private String displayMessage;
+	private int notChangePlayer;
 	// set the initial stones/pit 3~4
 
 	public Model(int stoneNum) {
@@ -30,6 +32,7 @@ public class Model {
 		numUndos = 3;// player has 3 undos each turn
 		canUndo = false;
 		displayMessage = "Player 1 turn";
+		notChangePlayer = 0;
 		this.notifyToListeners();
 	}
 
@@ -72,8 +75,7 @@ public class Model {
 			gameStatus = 1;
 		} else {
 		}
-		canUndo = false;// player hasn't made a move yet
-		numUndos = 3;// reset number of undos back to 3
+		//numUndos = 3;// reset number of undos back to 3
 		this.notifyToListeners();
 	}
 
@@ -97,80 +99,119 @@ public class Model {
 	 *         last was mancala) (3 = take opposite stones)
 	 */
 	public int moveStones(int pitNum) {
-		// error case
-		if (pitNum == p1Mancala || pitNum == p2Mancala) {
-			System.out.println(canUndo);
-			displayMessage = "You cannot move Mancala! Try again.";
-			this.notifyToListeners();
-			return 0;
-		}
-		if (gameStatus == 1 && pitNum > 7) {
-			displayMessage = "Player 1 cannot touch Player 2's pits. Try again!" ;
-			this.notifyToListeners();
-			return 0;
-		}
-		if (gameStatus == 2 && pitNum < 7) {
-			displayMessage = "Player 2 cannot touch Player 1's pits. Try again!";
-			this.notifyToListeners();
-			return 0;
-		}
-		previousPits = pits.clone();// saves current board before making changes
 		
-		int stonesInPit = pits[pitNum];
-		// picked pit will be empty
-		pits[pitNum] = 0;
-
-		// other pits will be increased
-		int addedPitNum = pitNum + 1;
-		while (stonesInPit > 0) {
-			pits[addedPitNum % 14] = pits[addedPitNum % 14] + 1;
-			addedPitNum++;
-			stonesInPit--;
-		}
-
-		int lastAddedPitNum = (addedPitNum - 1)%13;
-		canUndo = true;
-		// if the last added pit was mancala
-		if (gameStatus == 1 && lastAddedPitNum == p1Mancala) {
-			displayMessage = "Player 1 cannot touch Player 2's pits! Try again." ;
-			// p1 replay -> no player change
-			this.notifyToListeners();
-			return 2;
-		}
-		if (gameStatus == 2 && lastAddedPitNum == p2Mancala) {
-			// p2 replay -> no player change
-			this.notifyToListeners();
-			return 2;
-		}
-
-		// if the last added pit was empty
-		// get opposite's stone and my stone into the mancala
-		if (gameStatus == 1 && lastAddedPitNum < 7 && pits[lastAddedPitNum] == 1 && pits[getOppositePit(lastAddedPitNum)] != 0) {
-			pits[p1Mancala] += pits[getOppositePit(lastAddedPitNum)] + pits[lastAddedPitNum];
-			pits[getOppositePit(lastAddedPitNum)] = 0;
-			pits[lastAddedPitNum] = 0;
-			if (numUndos == 0) {// checks if player can undo
-				changePlayer();
+		if(gameEndIndicator()) {//game ends
+			previousPits = pits.clone();
+			boolean checkRow = true;
+			for(int i = 1; i < 7; i++) {//player 1 side
+				if(!isEmptyPit(i)) {
+					checkRow = false;
+				}
+			}
+			int stonesToAdd = 0;
+			if(checkRow) {//player 1 side is empty
+				for(int i = 8; i < 14; i++) {//add to player 2 mancala
+					stonesToAdd += pits[i];
+					pits[i] = 0;//clear
+				}
+				pits[p2Mancala] += stonesToAdd;
+			}else {//player 2 side is empty
+				for(int i = 1; i < 7; i++) {//add to player 1 mancala
+					stonesToAdd += pits[i];
+					pits[i] = 0;//clear
+				}
+				pits[p1Mancala] += stonesToAdd;
+				
 			}
 			this.notifyToListeners();
-			return 3;
-		} else if (gameStatus == 2 && lastAddedPitNum > 7 && pits[lastAddedPitNum] == 1 && pits[getOppositePit(lastAddedPitNum)] != 0) {
-			pits[p2Mancala] += pits[getOppositePit(lastAddedPitNum)] + pits[lastAddedPitNum];
-			pits[getOppositePit(lastAddedPitNum)] = 0;
-			pits[lastAddedPitNum] = 0;
-			if (numUndos == 0) {// checks if player can undo
-				changePlayer();
+			if(winnerIndicator() != 0) {
+				displayMessage  = "GAME OVER! Player " + winnerIndicator() + " won.";
+			}else {
+				displayMessage  = "GAME OVER! It was a tie.";
 			}
-			this.notifyToListeners();
-			return 3;
-		}
-		if (numUndos == 0) {// checks if player can undo
+			return -1;
+		}else {
+			// error case
+			if (pitNum == p1Mancala || pitNum == p2Mancala) {
+				System.out.println(canUndo);
+				displayMessage = "Cannot move Mancala! Try again.";
+				this.notifyToListeners();
+				return 0;
+			}
+			if (gameStatus == 1 && pitNum > 7) {
+				displayMessage = "Player 1 cannot touch Player 2's pits. Try again!" ;
+				this.notifyToListeners();
+				return 0;
+			}
+			if (gameStatus == 2 && pitNum < 7) {
+				displayMessage = "Player 2 cannot touch Player 1's pits. Try again!";
+				this.notifyToListeners();
+				return 0;
+			}
+			previousPits = pits.clone();// saves current board before making changes
+			int stonesInPit = pits[pitNum];
+			// picked pit will be empty
+			pits[pitNum] = 0;
+
+			// other pits will be increased
+			int addedPitNum = pitNum + 1;
+			while (stonesInPit > 0) {
+				pits[addedPitNum % 14] = pits[addedPitNum % 14] + 1;
+				addedPitNum++;
+				stonesInPit--;
+			}
+			int lastAddedPitNum = -1;
+			if(addedPitNum%14 == 0) {
+				lastAddedPitNum = 13;
+			}else {
+				lastAddedPitNum = (addedPitNum%14)-1;
+			}
+			canUndo = true;
+			notChangePlayer = 0;
+			// if the last added pit was mancala
+			if (gameStatus == 1 && lastAddedPitNum == p1Mancala) {
+				//displayMessage = "Player 1 cannot touch Player 2's pits! Try again." ;
+				// p1 replay -> no player change
+				this.notifyToListeners();
+				notChangePlayer = 2;
+				return 2;
+			}
+			if (gameStatus == 2 && lastAddedPitNum == p2Mancala) {
+				// p2 replay -> no player change
+				this.notifyToListeners();
+				notChangePlayer = 2;
+				return 2;
+			}
+
+			// if the last added pit was empty
+			// get opposite's stone and my stone into the mancala
+			if (gameStatus == 1 && lastAddedPitNum < 7 && pits[lastAddedPitNum] == 1 && pits[getOppositePit(lastAddedPitNum)] != 0) {
+				pits[p1Mancala] += pits[getOppositePit(lastAddedPitNum)] + pits[lastAddedPitNum];
+				pits[getOppositePit(lastAddedPitNum)] = 0;
+				pits[lastAddedPitNum] = 0;
+				prevNumUndos = numUndos;
+				changePlayer();
+				displayMessage = "Player 2 turn";
+				this.notifyToListeners();
+				return 3;
+			} else if (gameStatus == 2 && lastAddedPitNum > 7 && pits[lastAddedPitNum] == 1 && pits[getOppositePit(lastAddedPitNum)] != 0) {
+				pits[p2Mancala] += pits[getOppositePit(lastAddedPitNum)] + pits[lastAddedPitNum];
+				pits[getOppositePit(lastAddedPitNum)] = 0;
+				pits[lastAddedPitNum] = 0;
+				prevNumUndos = numUndos;
+				changePlayer();
+				displayMessage = "Player 1 turn";
+				this.notifyToListeners();
+				return 3;
+			}
 			changePlayer();
+			displayMessage = "Player " + gameStatus + " turn";
+			//canUndo = true;// player made a successful move so can player can undo
+			// normal turn ended normally
+			this.notifyToListeners();
+			return 1;
 		}
-		//canUndo = true;// player made a successful move so can player can undo
-		// normal turn ended normally
-		this.notifyToListeners();
-		return 1;
+		
 	}
 
 	public int undoMove() {// return 1 if successful and return 0 when can't undo
@@ -179,9 +220,19 @@ public class Model {
 			numUndos--;
 			displayMessage = "Number of undo left: " + numUndos;
 			canUndo = false;// cannot undo multiple times
+			if(notChangePlayer != 2) {
+				changePlayer();
+			}
 			this.notifyToListeners();
 			return 1;
 		}
+		if(numUndos == 0) {
+			displayMessage = "Cannot undo! Player " + getState() + " has no more undo left.";
+			numUndos = 3;
+		} else {
+			displayMessage = "Cannot undo! Player " + getState() + " turn.";
+		}
+		canUndo = false;// cannot undo multiple times
 		return 0;
 	}
 
@@ -208,29 +259,23 @@ public class Model {
 	 * @return true game ended false game not ended
 	 */
 	public boolean gameEndIndicator() {
-		boolean p1PitsEmpty = true;
-		boolean p2PitsEmpty = true;
 
 		if (gameStatus == 1) {
 			for (int i = 1; i < p1Mancala; i++) {
 				if (pits[i] > 0) {
-					p1PitsEmpty = false;
+					return false;
 				}
 			}
 		}
 		if (gameStatus == 2) {
 			for (int i = 8; i < 14; i++) {
 				if (pits[i] > 0) {
-					p2PitsEmpty = false;
+					return false;
 				}
 			}
 		}
 
-		if (p1PitsEmpty || p2PitsEmpty) {
-			return true;
-		} else {
-			return false;
-		}
+		return true;
 	}
 
 	/**
