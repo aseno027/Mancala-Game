@@ -13,6 +13,7 @@ import javax.swing.event.ChangeListener;
 public class MancalaView extends JFrame implements ChangeListener {
 
 	private Model mancalaModel;
+	private MancalaBoard boardStyle;
 	private int numStones;
 	private int style;
 
@@ -24,6 +25,7 @@ public class MancalaView extends JFrame implements ChangeListener {
 	public void mainMenu() {
 
 		numStones = 3;// default
+		boardStyle = new StandardBoard();
 		style = 1;// default
 
 		setLayout(new BorderLayout());
@@ -64,11 +66,13 @@ public class MancalaView extends JFrame implements ChangeListener {
 		JButton styleOne = new JButton("Style 1");// change later
 		styleOne.addActionListener(event -> {
 			style = 1;
+			boardStyle = new StandardBoard();
 			styleSelected.setText("STYLE " + style);
 		});
 		JButton styleTwo = new JButton("Style 2");// change later
 		styleTwo.addActionListener(event -> {
 			style = 2;
+			boardStyle = new SquareBoard();
 			styleSelected.setText("STYLE " + style);
 		});
 
@@ -99,15 +103,12 @@ public class MancalaView extends JFrame implements ChangeListener {
 	}
 
 	public void viewBoard() {
-		final BoardComponent board = new BoardComponent();
-		if(style == 1) {
-			board.add(new StandardBoard(20, 20, 100, 75));
-		}
-		if(style == 2) {
-			board.add(new SquareBoard(20, 20, 100, 75));
-		}	
-	}
-	
+		boardStyle.generateBoard();
+		
+		
+
+    }
+
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		// TODO Auto-generated method stub
