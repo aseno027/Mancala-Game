@@ -12,7 +12,7 @@ import javax.swing.SwingConstants;
 //CONCRETE STRATEGY
 public class StandardBoard implements MancalaBoard {
 
-	
+	Model model = new Model(3);
 	/**
 	 * generate standard mancala board.
 	 */
@@ -24,21 +24,36 @@ public class StandardBoard implements MancalaBoard {
 		JFrame boardFrame = new JFrame();
 		BorderLayout layout = new BorderLayout();
 		boardFrame.setLayout(layout);
+		
+		JPanel topPanel = new JPanel(new BorderLayout());
+		JLabel message = new JLabel("Player 1 turn");
+		JButton undoButton = new JButton("UNDO");
+		undoButton.addActionListener(event -> {
+					message.setText("UNDO");
+				});
+		topPanel.add(undoButton, BorderLayout.WEST);
+		topPanel.add(message,  BorderLayout.EAST);
+		
+		JPanel boardPanel = new JPanel(new BorderLayout());
 
 		JPanel mancalaA = new JPanel(new BorderLayout()); // East
 		JPanel mancalaB = new JPanel(new BorderLayout()); // West
 
 		JPanel centerBoard = new JPanel(new GridLayout(4, 6));
 	
-		boardFrame.add(mancalaA, BorderLayout.EAST);
-		boardFrame.add(mancalaB, BorderLayout.WEST);
+		boardPanel.add(mancalaA, BorderLayout.EAST);
+		boardPanel.add(mancalaB, BorderLayout.WEST);
 		JLabel directionP1 = new JLabel("Player 1 --->", SwingConstants.CENTER);
 		directionP1.setFont(new Font("Monospaced", Font.BOLD, 30));
-		boardFrame.add(directionP1, BorderLayout.SOUTH);
+		boardPanel.add(directionP1, BorderLayout.SOUTH);
 		JLabel directionP2 = new JLabel("<--- Player 2", SwingConstants.CENTER);
 		directionP2.setFont(new Font("Monospaced", Font.BOLD, 30));
-		boardFrame.add(directionP2, BorderLayout.NORTH);
-		boardFrame.add(centerBoard, BorderLayout.CENTER);
+		boardPanel.add(directionP2, BorderLayout.NORTH);
+		boardPanel.add(centerBoard, BorderLayout.CENTER);
+		
+		boardFrame.add(topPanel,  BorderLayout.NORTH);
+		boardFrame.add(boardPanel,  BorderLayout.CENTER);
+		
 
 		boardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		boardFrame.setTitle("Mancala Board");
@@ -62,7 +77,7 @@ public class StandardBoard implements MancalaBoard {
 			if(i == 0 || i == 7) {
 				pits[i].setIcon(img.getMancalaImg(0));
 			} else {
-				pits[i].setIcon(img.getPitImg(i));
+				pits[i].setIcon(img.getPitImg(4));
 			}
 		}
 		
