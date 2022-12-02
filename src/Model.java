@@ -11,12 +11,13 @@ public class Model {
 	private int[] previousPits;// used for undo
 	private final int p1Mancala = 7;
 	private final int p2Mancala = 0;
-	private int prevNumUndos;
-	private int numUndos;
+	private int numUndosP1;
+	private int numUndosP2;
 	private int initialStoneNum;
 	private boolean canUndo;
 	private String displayMessage;
 	private int notChangePlayer;
+	
 	// set the initial stones/pit 3~4
 
 	public Model(int stoneNum) {
@@ -29,7 +30,8 @@ public class Model {
 		}
 		gameStatus = 1;
 		initialStoneNum = stoneNum;
-		numUndos = 3;// player has 3 undos each turn
+		numUndosP1 = 3;
+		numUndosP2 = 3;
 		canUndo = false;
 		displayMessage = "Player 1 turn";
 		notChangePlayer = 0;
@@ -189,7 +191,6 @@ public class Model {
 				pits[p1Mancala] += pits[getOppositePit(lastAddedPitNum)] + pits[lastAddedPitNum];
 				pits[getOppositePit(lastAddedPitNum)] = 0;
 				pits[lastAddedPitNum] = 0;
-				prevNumUndos = numUndos;
 				changePlayer();
 				displayMessage = "Player 2 turn";
 				this.notifyToListeners();
@@ -198,7 +199,6 @@ public class Model {
 				pits[p2Mancala] += pits[getOppositePit(lastAddedPitNum)] + pits[lastAddedPitNum];
 				pits[getOppositePit(lastAddedPitNum)] = 0;
 				pits[lastAddedPitNum] = 0;
-				prevNumUndos = numUndos;
 				changePlayer();
 				displayMessage = "Player 1 turn";
 				this.notifyToListeners();
@@ -215,10 +215,24 @@ public class Model {
 	}
 
 	public int undoMove() {// return 1 if successful and return 0 when can't undo
-		if (canUndo && numUndos > 0) {// checks if player made a move
+		int undoLeft = 0;
+		if(getState() == 1) {
+			undoLeft = numUndosP1;
+		}else {
+			undoLeft = numUndosP2;
+		}
+
+		if (canUndo && undoLeft > 0) {// checks if player made a move
 			pits = previousPits.clone();// restore changes made
-			numUndos--;
-			displayMessage = "Number of undo left: " + numUndos;
+			if(getState() == 1) {
+				numUndosP1--;
+				displayMessage = "Number of undo left: " + numUndosP1;
+				numUndosP2 = 3;
+			}else {
+				numUndosP2--;
+				displayMessage = "Number of undo left: " + numUndosP2;
+				numUndosP1 = 3;
+			}
 			canUndo = false;// cannot undo multiple times
 			if(notChangePlayer != 2) {
 				changePlayer();
@@ -226,9 +240,10 @@ public class Model {
 			this.notifyToListeners();
 			return 1;
 		}
-		if(numUndos == 0) {
+		if(undoLeft == 0) {
 			displayMessage = "Cannot undo! Player " + getState() + " has no more undo left.";
-			numUndos = 3;
+			numUndosP2 = 3;
+			numUndosP1 = 3;
 		} else {
 			displayMessage = "Cannot undo! Player " + getState() + " turn.";
 		}
