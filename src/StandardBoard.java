@@ -9,39 +9,30 @@ import javax.swing.*;
 
 //CONCRETE STRATEGY
 public class StandardBoard implements MancalaBoard {
-	private int x;
-	private int y;
-	private int width;
-	private int height;
 
+	
 	/**
-	 * Constructs a board.
+	 * generate standard mancala board.
 	 */
-	public StandardBoard(int x, int y, int width, int height) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+	public void generateBoard() {
 
 		JFrame boardFrame = new JFrame();
 		BorderLayout layout = new BorderLayout();
 		boardFrame.setLayout(layout);
 
-		// JPanel aSquares = new JPanel(); //South
-		// JPanel bSquares = new JPanel(); //North
-		// JPanel squareLabels = new JPanel(); //Center
 		JPanel mancalaA = new JPanel(new BorderLayout()); // East
 		JPanel mancalaB = new JPanel(new BorderLayout()); // West
 
-		// mancalaB.setLayout(new GridLayout());
-
 		JPanel centerBoard = new JPanel(new GridLayout(4, 6));
-		// boardFrame.add(aSquares, BorderLayout.SOUTH);
-		// boardFrame.add(bSquares, BorderLayout.NORTH);
-
-		// boardFrame.add(squareLabels, BorderLayout.CENTER);
+	
 		boardFrame.add(mancalaA, BorderLayout.EAST);
 		boardFrame.add(mancalaB, BorderLayout.WEST);
+		JLabel directionP1 = new JLabel("Player 1 --->", SwingConstants.CENTER);
+		directionP1.setFont(new Font("Monospaced", Font.BOLD, 30));
+		boardFrame.add(directionP1, BorderLayout.SOUTH);
+		JLabel directionP2 = new JLabel("<--- Player 2", SwingConstants.CENTER);
+		directionP2.setFont(new Font("Monospaced", Font.BOLD, 30));
+		boardFrame.add(directionP2, BorderLayout.NORTH);
 		boardFrame.add(centerBoard, BorderLayout.CENTER);
 
 		boardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,35 +68,6 @@ public class StandardBoard implements MancalaBoard {
 		pitB6.setPreferredSize(new Dimension(75, 75));
 		trenchA.setPreferredSize(new Dimension(150, 150));
 		trenchB.setPreferredSize(new Dimension(150, 150));
-		
-		pitA1.setBackground(Color.WHITE);
-        pitA1.setBorderPainted(false);
-        pitA2.setBackground(Color.WHITE);
-        pitA2.setBorderPainted(false);
-        pitA3.setBackground(Color.WHITE);
-        pitA3.setBorderPainted(false);
-        pitA4.setBackground(Color.WHITE);
-        pitA4.setBorderPainted(false);
-        pitA5.setBackground(Color.WHITE);
-        pitA5.setBorderPainted(false);
-        pitA6.setBackground(Color.WHITE);
-        pitA6.setBorderPainted(false);
-        pitB1.setBackground(Color.WHITE);
-        pitB1.setBorderPainted(false);
-        pitB2.setBackground(Color.WHITE);
-        pitB2.setBorderPainted(false);
-        pitB3.setBackground(Color.WHITE);
-        pitB3.setBorderPainted(false);
-        pitB4.setBackground(Color.WHITE);
-        pitB4.setBorderPainted(false);
-        pitB5.setBackground(Color.WHITE);
-        pitB5.setBorderPainted(false);
-        pitB6.setBackground(Color.WHITE);
-        pitB6.setBorderPainted(false);
-        trenchA.setBackground(Color.WHITE);
-        trenchA.setBorderPainted(false);
-        trenchB.setBackground(Color.WHITE);
-        trenchB.setBorderPainted(false);
 
 		JLabel label;
 		centerBoard.add(pitA1);
@@ -168,37 +130,4 @@ public class StandardBoard implements MancalaBoard {
 		mancalaB.add(trenchB, BorderLayout.CENTER);
 	}
 
-	public void draw(Graphics2D g2) {
-//		Ellipse2D.Double pitA1 = new Ellipse2D.Double(x + 110, y + 40, height, height);	
-//		Ellipse2D.Double pitA2 = new Ellipse2D.Double(x + 210, y + 40, height, height);
-//		Ellipse2D.Double pitA3 = new Ellipse2D.Double(x + 310, y + 40, height, height);	
-//		Ellipse2D.Double pitA4 = new Ellipse2D.Double(x + 410, y + 40, height, height);	
-//		Ellipse2D.Double pitA5 = new Ellipse2D.Double(x + 510, y + 40, height, height);	
-//		Ellipse2D.Double pitA6 = new Ellipse2D.Double(x + 610, y + 40, height, height);	
-//		Ellipse2D.Double pitB1 = new Ellipse2D.Double(x + 110, y + 275, height, height);	
-//		Ellipse2D.Double pitB2 = new Ellipse2D.Double(x + 210, y + 275, height, height);		
-//		Ellipse2D.Double pitB3 = new Ellipse2D.Double(x + 310, y + 275, height, height);	
-//		Ellipse2D.Double pitB4 = new Ellipse2D.Double(x + 410, y + 275, height, height);	
-//		Ellipse2D.Double pitB5 = new Ellipse2D.Double(x + 510, y + 275, height, height);	
-//		Ellipse2D.Double pitB6 = new Ellipse2D.Double(x + 610, y + 275, height, height);	
-//		Ellipse2D.Double trenchA = new Ellipse2D.Double(x + 25, y + 40, height, height * 4);	
-//		Ellipse2D.Double trenchB = new Ellipse2D.Double(x + 700, y + 40, height, height * 4);
-//		Rectangle2D.Double board = new Rectangle2D.Double(x, y, width * 8, height * 5);
-//		g2.draw(pitA1);
-//		g2.draw(pitA2);
-//		g2.draw(pitA3);
-//		g2.draw(pitA4);
-//		g2.draw(pitA5);
-//		g2.draw(pitA6);
-//		g2.draw(pitB1);
-//		g2.draw(pitB2);
-//		g2.draw(pitB3);
-//		g2.draw(pitB4);
-//		g2.draw(pitB5);
-//		g2.draw(pitB6);
-//		g2.draw(trenchA);
-//		g2.draw(trenchB);
-//		g2.draw(board);
-
-	}
 }
