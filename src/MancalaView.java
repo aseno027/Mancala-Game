@@ -1,34 +1,18 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.Rectangle2D;
-
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.event.*;
 
 public class MancalaView extends JFrame implements ChangeListener {
 
 	private Model mancalaModel;
+	private int[] pits;
 	private MancalaBoard boardStyle;
-	private int numStones;
-	private int style;
-
-	public static void main(String args[]) {
-		MancalaView v = new MancalaView();
-		v.mainMenu();
-	}
-
-	public void mainMenu() {
-
-		numStones = 3;// default
+	
+	public MancalaView(Model mancalaModel) {
+		this.mancalaModel = mancalaModel;
 		boardStyle = new StandardBoard();
-		style = 1;// default
-
-		setLayout(new BorderLayout());
+		JFrame menuFrame = new JFrame();
+		menuFrame.setLayout(new BorderLayout());
 
 		JLabel title = new JLabel("*MANCALA GAME*", SwingConstants.CENTER);
 
@@ -36,10 +20,10 @@ public class MancalaView extends JFrame implements ChangeListener {
 		title.setBackground(Color.lightGray);
 		title.setOpaque(true);
 
-		JLabel numStonesSelected = new JLabel((numStones + " STONES"), SwingConstants.CENTER);// default
+		JLabel numStonesSelected = new JLabel((this.mancalaModel.getInitialStoneNum() + " STONES"), SwingConstants.CENTER);// default
 		numStonesSelected.setBackground(Color.cyan);
 		numStonesSelected.setOpaque(true);
-		JLabel styleSelected = new JLabel("STYLE " + style, SwingConstants.CENTER);// default
+		JLabel styleSelected = new JLabel("Standard Board", SwingConstants.CENTER);// default
 		styleSelected.setBackground(Color.pink);
 		styleSelected.setOpaque(true);
 
@@ -49,13 +33,13 @@ public class MancalaView extends JFrame implements ChangeListener {
 		prompt1.setOpaque(true);
 		JButton threeStones = new JButton("3 Stones");
 		threeStones.addActionListener(event -> {
-			numStones = 3;
-			numStonesSelected.setText((numStones + " STONES"));
+			this.mancalaModel.setInitialStoneNum(3);
+			numStonesSelected.setText((this.mancalaModel.getInitialStoneNum() + " STONES"));
 		});
 		JButton fourStones = new JButton("4 Stones");
 		fourStones.addActionListener(event -> {
-			numStones = 4;
-			numStonesSelected.setText((numStones + " STONES"));
+			this.mancalaModel.setInitialStoneNum(4);
+			numStonesSelected.setText((this.mancalaModel.getInitialStoneNum() + " STONES"));
 		});
 		panel.add(prompt1);
 		panel.add(threeStones);
@@ -63,17 +47,15 @@ public class MancalaView extends JFrame implements ChangeListener {
 		JLabel prompt2 = new JLabel("\nSelect style: ", SwingConstants.CENTER);
 		prompt2.setBackground(Color.pink);
 		prompt2.setOpaque(true);
-		JButton styleOne = new JButton("Style 1");// change later
+		JButton styleOne = new JButton("Standard Board");// change later
 		styleOne.addActionListener(event -> {
-			style = 1;
 			boardStyle = new StandardBoard();
-			styleSelected.setText("STYLE " + style);
+			styleSelected.setText("Standard Board");
 		});
-		JButton styleTwo = new JButton("Style 2");// change later
+		JButton styleTwo = new JButton("Square Board");// change later
 		styleTwo.addActionListener(event -> {
-			style = 2;
 			boardStyle = new SquareBoard();
-			styleSelected.setText("STYLE " + style);
+			styleSelected.setText("Square Board");
 		});
 
 		JLabel prompt3 = new JLabel("YOUR SELECTIONS: ", SwingConstants.CENTER);
@@ -88,30 +70,57 @@ public class MancalaView extends JFrame implements ChangeListener {
 
 		JButton startGame = new JButton("START GAME");
 		startGame.addActionListener(event -> {
-			dispose();
+			menuFrame.dispose();
 			viewBoard();
 		});
 
-		add(title, BorderLayout.NORTH);
-		add(panel, BorderLayout.CENTER);
-		add(startGame, BorderLayout.SOUTH);
+		menuFrame.add(title, BorderLayout.NORTH);
+		menuFrame.add(panel, BorderLayout.CENTER);
+		menuFrame.add(startGame, BorderLayout.SOUTH);
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		pack();
-		setVisible(true);
-
+		menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		menuFrame.pack();
+		menuFrame.setVisible(true);
+		
 	}
 
 	public void viewBoard() {
+		boardStyle.initialNumStone(this.mancalaModel.getInitialStoneNum());
 		boardStyle.generateBoard();
-		
-		
-
+		for(int i = 0; i < 14; i++) {
+			int pitNum = i;
+			boardStyle.getPitButtons()[i].addActionListener(event -> {
+				this.mancalaModel.moveStones(pitNum);
+				boardStyle.setMessage(this.mancalaModel.getDisplayMessage());
+			});
+		}
+		boardStyle.getUndoButtons().addActionListener(event -> {
+				this.mancalaModel.undoMove();
+				boardStyle.setMessage(this.mancalaModel.getDisplayMessage());
+			});
     }
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		// TODO Auto-generated method stub
+		pits = mancalaModel.getPits();
+		ImageFiles img = new ImageFiles();
+		
+		for(int i = 0; i < 14; i++) {
+			if(i == 0 || i == 7) {
+				if(pits[i] > 25) {
+					boardStyle.getPitButtons()[i].setIcon(img.getMancalaImg(25));
+				}else {
+					boardStyle.getPitButtons()[i].setIcon(img.getMancalaImg(pits[i]));
+				}
+			} else {
+				if(pits[i] > 20) {
+					boardStyle.getPitButtons()[i].setIcon(img.getPitImg(20));
+				}else {
+					boardStyle.getPitButtons()[i].setIcon(img.getPitImg(pits[i]));
+				}
+			}
+		}
+		
 
 	}
 
