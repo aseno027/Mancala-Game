@@ -12,12 +12,14 @@ import javax.swing.SwingConstants;
 //CONCRETE STRATEGY
 public class StandardBoard implements MancalaBoard {
 
-	Model model = new Model(3);
+	private JButton[] pits = new JButton[14];
+	private int numStones;
+	private JButton undoButton;
+	private JLabel messageLabel;
 	/**
 	 * generate standard mancala board.
 	 */
 	public void generateBoard() {
-
 		
 		ImageFiles img = new ImageFiles();
 		
@@ -25,14 +27,14 @@ public class StandardBoard implements MancalaBoard {
 		BorderLayout layout = new BorderLayout();
 		boardFrame.setLayout(layout);
 		
-		JPanel topPanel = new JPanel(new BorderLayout());
-		JLabel message = new JLabel("Player 1 turn");
-		JButton undoButton = new JButton("UNDO");
-		undoButton.addActionListener(event -> {
-					message.setText("UNDO");
-				});
-		topPanel.add(undoButton, BorderLayout.WEST);
-		topPanel.add(message,  BorderLayout.EAST);
+		JPanel topPanel = new JPanel(new GridLayout());
+		messageLabel = new JLabel("Player 1 turn", SwingConstants.CENTER);
+		messageLabel.setFont(new Font("Monospaced", Font.BOLD, 15));
+		JPanel undoButtonPanel = new JPanel();
+		undoButton = new JButton("UNDO");
+		undoButtonPanel.add(undoButton);
+		topPanel.add(undoButtonPanel);
+		topPanel.add(messageLabel);
 		
 		JPanel boardPanel = new JPanel(new BorderLayout());
 
@@ -62,7 +64,7 @@ public class StandardBoard implements MancalaBoard {
 
 		
 		
-		JButton[] pits = new JButton[14];
+		//JButton[] pits = new JButton[14];
 				
 		for(int i = 0; i < pits.length; i++) {
 			pits[i] = new RoundButton(null);
@@ -77,13 +79,13 @@ public class StandardBoard implements MancalaBoard {
 			if(i == 0 || i == 7) {
 				pits[i].setIcon(img.getMancalaImg(0));
 			} else {
-				pits[i].setIcon(img.getPitImg(4));
+				pits[i].setIcon(img.getPitImg(numStones));
 			}
 		}
 		
 		
 		JLabel label;
-		for(int i = 8; i < 14; i++) {
+		for(int i = 13; i >= 8; i--) {
 			centerBoard.add(pits[i]);
 		}
 
@@ -139,6 +141,27 @@ public class StandardBoard implements MancalaBoard {
 		label.setFont(new Font("Monospaced", Font.BOLD, 30));
 		mancalaB.add(label, BorderLayout.NORTH);
 		mancalaB.add(pits[0], BorderLayout.CENTER);
+	}
+	
+	@Override
+	public JButton[] getPitButtons() {
+		return pits;
+	}
+
+	@Override
+	public void initialNumStone(int numStones) {
+		this.numStones = numStones;
+		
+	}
+
+	@Override
+	public JButton getUndoButtons() {
+		return undoButton;
+	}
+
+	@Override
+	public void setMessage(String s) {
+		messageLabel.setText(s);
 	}
 
 }
