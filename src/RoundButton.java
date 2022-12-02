@@ -7,7 +7,7 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
-public class RoundedButton extends JButton{
+public class RoundButton extends JButton{
 	private Shape shape;
 	public RoundedButton() {
 		super();
