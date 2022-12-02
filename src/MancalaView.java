@@ -99,22 +99,15 @@ public class MancalaView extends JFrame implements ChangeListener {
 	}
 
 	public void viewBoard() {
-		JFrame boardFrame = new JFrame();
-		boardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		final BoardComponent board = new BoardComponent();
 		if(style == 1) {
 			board.add(new StandardBoard(20, 20, 100, 75));
 		}
 		if(style == 2) {
 			board.add(new SquareBoard(20, 20, 100, 75));
-		}
-		boardFrame.add(board, BorderLayout.CENTER);
-		boardFrame.setTitle("Mancala Board");
-		boardFrame.setSize(1000,500);
-		boardFrame.setVisible(true);
-
+		}	
 	}
-
+	
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		// TODO Auto-generated method stub
