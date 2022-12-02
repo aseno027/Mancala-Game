@@ -1,29 +1,30 @@
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-import javax.swing.Icon;
 import javax.swing.JButton;
 
+
+/**
+ * Extension of JButton
+ * The shape of button will be seems like the
+ *  
+ * @author Team Bagle
+ *
+ */
 public class RoundButton extends JButton{
 	private Shape shape;
-	public RoundedButton() {
+	
+	/**
+	 * Constructor of the RoundButton
+	 * The initial background color is white, 
+	 */
+	public RoundButton() {
 		super();
 		setBackground(Color.WHITE);
-		setFocusable(false);
-		
-        Dimension size = getPreferredSize();
-		size.width = size.height = Math.max(size.width, size.height);
-		setPreferredSize(size);
         setContentAreaFilled(false);
-    }
-	
-	public void setIcon(Icon newIcon) {
-		super.setIcon(newIcon);
 	}
-	
 	
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -34,12 +35,15 @@ public class RoundButton extends JButton{
 		super.paintComponent(g);
 	}
 	
+	/**
+	 * Overriden method to check whether the button clicked position
+	 * is inside the shape or not.
+	 */
 	@Override
 	public boolean contains(int x, int y) {
-		if(shape == null || !shape.getBounds2D().equals(getBounds())) {
-			shape = new Ellipse2D.Float(0, 0, getWidth(), getHeight());
+		if(shape == null || !shape.getBounds2D().equals(super.getBounds())) {
+			shape = new Ellipse2D.Float(0, 0, super.getWidth(), super.getHeight());
 		}
-		
 		return shape.contains(x, y);
 	}
 }
