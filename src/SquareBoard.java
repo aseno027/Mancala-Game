@@ -2,154 +2,118 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.geom.*;
 import javax.swing.*;
 
 
 //CONCRETE STRATEGY
 public class SquareBoard implements MancalaBoard{
-	private int x;
-	private int y;
-	private int width;
-	private int height;
 
 	/**
 	 * Constructs a board.
 	 */
-	public SquareBoard(int x, int y, int width, int height) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		
-		ImageFiles img = new ImageFiles();
+	public void generateBoard() {
 		
 		JFrame boardFrame = new JFrame();
-		BorderLayout layout = new BorderLayout(-10,-10);
+		BorderLayout layout = new BorderLayout();
 		boardFrame.setLayout(layout);
 		
 		
-		JPanel aSquares = new JPanel(); //South
-		JPanel bSquares = new JPanel(); //North
-		JPanel squareLabels = new JPanel(); //Center
-		JPanel mancalaA = new JPanel(); //East
-		JPanel mancalaB = new JPanel(); //West
-		
-		boardFrame.add(aSquares, BorderLayout.SOUTH);
-		boardFrame.add(bSquares, BorderLayout.NORTH);
-		boardFrame.add(squareLabels, BorderLayout.CENTER);
+		JPanel mancalaA = new JPanel(new BorderLayout()); // East
+		JPanel mancalaB = new JPanel(new BorderLayout()); // West
+
+		JPanel centerBoard = new JPanel(new GridLayout(4, 6));
+	
 		boardFrame.add(mancalaA, BorderLayout.EAST);
 		boardFrame.add(mancalaB, BorderLayout.WEST);
-		
-		
+		JLabel directionP1 = new JLabel("Player 1 --->", SwingConstants.CENTER);
+		directionP1.setFont(new Font("Monospaced", Font.BOLD, 30));
+		boardFrame.add(directionP1, BorderLayout.SOUTH);
+		JLabel directionP2 = new JLabel("<--- Player 2", SwingConstants.CENTER);
+		directionP2.setFont(new Font("Monospaced", Font.BOLD, 30));
+		boardFrame.add(directionP2, BorderLayout.NORTH);
+		boardFrame.add(centerBoard, BorderLayout.CENTER);
+
 		boardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		boardFrame.setTitle("Mancala Board");
-		boardFrame.setSize(1000,500);
+		boardFrame.setSize(1000, 500);
 		boardFrame.setVisible(true);
 		
-		JLabel label = new JLabel("", SwingConstants.CENTER);
-		label.setFont(new Font("Verdana", Font.PLAIN, 28));
-		label.setText("<html><pre>B6   B5   B4   B3   B2   B1<br/><br/><br/>"
-				+ "<br/><br/><br/>A1   A2   A3   A4   A5   A6<pre><html>");
-		squareLabels.add(label);
-		
-		
 		JButton pitA1 = new JButton();
-		pitA1.setIcon(img.getPitImg(0));
 		JButton pitA2 = new JButton();
-		pitA2.setIcon(img.getPitImg(0));
 		JButton pitA3 = new JButton();
-		pitA3.setIcon(img.getPitImg(0));
 		JButton pitA4 = new JButton();
-		pitA4.setIcon(img.getPitImg(0));
 		JButton pitA5 = new JButton();
-		pitA5.setIcon(img.getPitImg(0));
 		JButton pitA6 = new JButton();
-		pitA6.setIcon(img.getPitImg(0));
 		JButton pitB1 = new JButton();
-		pitB1.setIcon(img.getPitImg(0));
 		JButton pitB2 = new JButton();
-		pitB2.setIcon(img.getPitImg(0));
 		JButton pitB3 = new JButton();
-		pitB3.setIcon(img.getPitImg(0));
 		JButton pitB4 = new JButton();
-		pitB4.setIcon(img.getPitImg(0));
 		JButton pitB5 = new JButton();
-		pitB5.setIcon(img.getPitImg(0));
 		JButton pitB6 = new JButton();
-		pitB6.setIcon(img.getPitImg(0));
-		
-		
 		JButton trenchA = new JButton();
-		trenchA.setIcon(img.getMancalaImg(0));
 		JButton trenchB = new JButton();
-		trenchB.setIcon(img.getMancalaImg(0));
 		
-		pitA1.setPreferredSize(new Dimension(75,75));
-		pitA2.setPreferredSize(new Dimension(75,75));
-		pitA3.setPreferredSize(new Dimension(75,75));
-		pitA4.setPreferredSize(new Dimension(75,75));
-		pitA5.setPreferredSize(new Dimension(75,75));
-		pitA6.setPreferredSize(new Dimension(75,75));
-		pitB1.setPreferredSize(new Dimension(75,75));
-		pitB2.setPreferredSize(new Dimension(75,75));
-		pitB3.setPreferredSize(new Dimension(75,75));
-		pitB4.setPreferredSize(new Dimension(75,75));
-		pitB5.setPreferredSize(new Dimension(75,75));
-		pitB6.setPreferredSize(new Dimension(75,75));
-		trenchA.setPreferredSize(new Dimension(75,150));
-		trenchB.setPreferredSize(new Dimension(75,300));
-		
-		
-		aSquares.add(pitA1);
-		aSquares.add(pitA2);
-		aSquares.add(pitA3);
-		aSquares.add(pitA4);
-		aSquares.add(pitA5);
-		aSquares.add(pitA6);
-		
-		bSquares.add(pitB1);
-		bSquares.add(pitB2);
-		bSquares.add(pitB3);
-		bSquares.add(pitB4);
-		bSquares.add(pitB5);
-		bSquares.add(pitB6);
-		
-		mancalaA.add(trenchA);
-		mancalaB.add(trenchB);
+		JLabel label;
+		centerBoard.add(pitA1);
+		centerBoard.add(pitA2);
+		centerBoard.add(pitA3);
+		centerBoard.add(pitA4);
+		centerBoard.add(pitA5);
+		centerBoard.add(pitA6);
+		label = new JLabel("B6", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("B5", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("B4", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("B3", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("B2", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("B1", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+
+		label = new JLabel("A1", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("A2", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("A3", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("A4", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("A5", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		label = new JLabel("A6", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		centerBoard.add(label);
+		centerBoard.add(pitB1);
+		centerBoard.add(pitB2);
+		centerBoard.add(pitB3);
+		centerBoard.add(pitB4);
+		centerBoard.add(pitB5);
+		centerBoard.add(pitB6);
+
+		label = new JLabel("Mancala A", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		mancalaA.add(label, BorderLayout.SOUTH);
+		mancalaA.add(trenchA, BorderLayout.CENTER);
+		label = new JLabel("Mancala B", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		mancalaB.add(label, BorderLayout.NORTH);
+		mancalaB.add(trenchB, BorderLayout.CENTER);
 	}
 
-	public void draw(Graphics2D g2) {
-//		Ellipse2D.Double pitA1 = new Ellipse2D.Double(x + 110, y + 40, height, height);	
-//		Ellipse2D.Double pitA2 = new Ellipse2D.Double(x + 210, y + 40, height, height);
-//		Ellipse2D.Double pitA3 = new Ellipse2D.Double(x + 310, y + 40, height, height);	
-//		Ellipse2D.Double pitA4 = new Ellipse2D.Double(x + 410, y + 40, height, height);	
-//		Ellipse2D.Double pitA5 = new Ellipse2D.Double(x + 510, y + 40, height, height);	
-//		Ellipse2D.Double pitA6 = new Ellipse2D.Double(x + 610, y + 40, height, height);	
-//		Ellipse2D.Double pitB1 = new Ellipse2D.Double(x + 110, y + 275, height, height);	
-//		Ellipse2D.Double pitB2 = new Ellipse2D.Double(x + 210, y + 275, height, height);		
-//		Ellipse2D.Double pitB3 = new Ellipse2D.Double(x + 310, y + 275, height, height);	
-//		Ellipse2D.Double pitB4 = new Ellipse2D.Double(x + 410, y + 275, height, height);	
-//		Ellipse2D.Double pitB5 = new Ellipse2D.Double(x + 510, y + 275, height, height);	
-//		Ellipse2D.Double pitB6 = new Ellipse2D.Double(x + 610, y + 275, height, height);	
-//		Ellipse2D.Double trenchA = new Ellipse2D.Double(x + 25, y + 40, height, height * 4);	
-//		Ellipse2D.Double trenchB = new Ellipse2D.Double(x + 700, y + 40, height, height * 4);
-//		Rectangle2D.Double board = new Rectangle2D.Double(x, y, width * 8, height * 5);
-//		g2.draw(pitA1);
-//		g2.draw(pitA2);
-//		g2.draw(pitA3);
-//		g2.draw(pitA4);
-//		g2.draw(pitA5);
-//		g2.draw(pitA6);
-//		g2.draw(pitB1);
-//		g2.draw(pitB2);
-//		g2.draw(pitB3);
-//		g2.draw(pitB4);
-//		g2.draw(pitB5);
-//		g2.draw(pitB6);
-//		g2.draw(trenchA);
-//		g2.draw(trenchB);
-//		g2.draw(board);
-		
-	}
 }
