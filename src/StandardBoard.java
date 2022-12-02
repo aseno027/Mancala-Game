@@ -77,6 +77,35 @@ public class StandardBoard implements MancalaBoard {
 		pitB6.setPreferredSize(new Dimension(75, 75));
 		trenchA.setPreferredSize(new Dimension(150, 150));
 		trenchB.setPreferredSize(new Dimension(150, 150));
+		
+		pitA1.setBackground(Color.WHITE);
+        pitA1.setBorderPainted(false);
+        pitA2.setBackground(Color.WHITE);
+        pitA2.setBorderPainted(false);
+        pitA3.setBackground(Color.WHITE);
+        pitA3.setBorderPainted(false);
+        pitA4.setBackground(Color.WHITE);
+        pitA4.setBorderPainted(false);
+        pitA5.setBackground(Color.WHITE);
+        pitA5.setBorderPainted(false);
+        pitA6.setBackground(Color.WHITE);
+        pitA6.setBorderPainted(false);
+        pitB1.setBackground(Color.WHITE);
+        pitB1.setBorderPainted(false);
+        pitB2.setBackground(Color.WHITE);
+        pitB2.setBorderPainted(false);
+        pitB3.setBackground(Color.WHITE);
+        pitB3.setBorderPainted(false);
+        pitB4.setBackground(Color.WHITE);
+        pitB4.setBorderPainted(false);
+        pitB5.setBackground(Color.WHITE);
+        pitB5.setBorderPainted(false);
+        pitB6.setBackground(Color.WHITE);
+        pitB6.setBorderPainted(false);
+        trenchA.setBackground(Color.WHITE);
+        trenchA.setBorderPainted(false);
+        trenchB.setBackground(Color.WHITE);
+        trenchB.setBorderPainted(false);
 
 		JLabel label;
 		centerBoard.add(pitA1);
