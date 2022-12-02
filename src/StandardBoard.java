@@ -129,7 +129,13 @@ public class StandardBoard implements MancalaBoard {
 		centerBoard.add(pitB5);
 		centerBoard.add(pitB6);
 
+		label = new JLabel("Mancala A", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		mancalaA.add(label, BorderLayout.SOUTH);
 		mancalaA.add(trenchA, BorderLayout.CENTER);
+		label = new JLabel("Mancala B", SwingConstants.CENTER);
+		label.setFont(new Font("Monospaced", Font.BOLD, 30));
+		mancalaB.add(label, BorderLayout.NORTH);
 		mancalaB.add(trenchB, BorderLayout.CENTER);
 	}
 
