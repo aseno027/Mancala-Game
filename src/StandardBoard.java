@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -31,7 +32,10 @@ public class StandardBoard implements MancalaBoard{
 		JPanel bSquares = new JPanel(); //North
 		JPanel squareLabels = new JPanel(); //Center
 		JPanel mancalaA = new JPanel(); //East
+		mancalaA.setLayout(new BorderLayout());
 		JPanel mancalaB = new JPanel(); //West
+
+		mancalaB.setLayout(new BorderLayout());
 		
 		boardFrame.add(aSquares, BorderLayout.SOUTH);
 		boardFrame.add(bSquares, BorderLayout.NORTH);
@@ -79,8 +83,8 @@ public class StandardBoard implements MancalaBoard{
 		pitB4.setPreferredSize(new Dimension(75,75));
 		pitB5.setPreferredSize(new Dimension(75,75));
 		pitB6.setPreferredSize(new Dimension(75,75));
-		trenchA.setPreferredSize(new Dimension(75,750));
-		trenchB.setPreferredSize(new Dimension(75,750));
+		trenchA.setPreferredSize(new Dimension(75,150));
+		trenchB.setPreferredSize(new Dimension(75,150));
 		
 		
 		aSquares.add(pitA1);
@@ -97,8 +101,8 @@ public class StandardBoard implements MancalaBoard{
 		bSquares.add(pitB5);
 		bSquares.add(pitB6);
 		
-		mancalaA.add(trenchA);
-		mancalaB.add(trenchB);
+		mancalaA.add(trenchA, BorderLayout.CENTER);
+		mancalaB.add(trenchB, BorderLayout.CENTER);
 	}
 
 	public void draw(Graphics2D g2) {
