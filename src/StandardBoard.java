@@ -16,6 +16,8 @@ public class StandardBoard implements MancalaBoard {
 	 */
 	public void generateBoard() {
 
+		ImageFiles img = new ImageFiles();
+		
 		JFrame boardFrame = new JFrame();
 		BorderLayout layout = new BorderLayout();
 		boardFrame.setLayout(layout);
@@ -37,7 +39,7 @@ public class StandardBoard implements MancalaBoard {
 
 		boardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		boardFrame.setTitle("Mancala Board");
-		boardFrame.setSize(1000, 500);
+		boardFrame.setSize(1000, 600);
 		boardFrame.setVisible(true);
 
 		RoundButton pitA1 = new RoundButton(null);
@@ -54,21 +56,58 @@ public class StandardBoard implements MancalaBoard {
 		RoundButton pitB6 = new RoundButton(null);
 		RoundButton trenchA = new RoundButton(null);
 		RoundButton trenchB = new RoundButton(null);
-		pitA1.setPreferredSize(new Dimension(75, 75));
-		pitA2.setPreferredSize(new Dimension(75, 75));
-		pitA3.setPreferredSize(new Dimension(75, 75));
-		pitA4.setPreferredSize(new Dimension(75, 75));
-		pitA5.setPreferredSize(new Dimension(75, 75));
-		pitA6.setPreferredSize(new Dimension(75, 75));
-		pitB1.setPreferredSize(new Dimension(75, 75));
-		pitB2.setPreferredSize(new Dimension(75, 75));
-		pitB3.setPreferredSize(new Dimension(75, 75));
-		pitB4.setPreferredSize(new Dimension(75, 75));
-		pitB5.setPreferredSize(new Dimension(75, 75));
-		pitB6.setPreferredSize(new Dimension(75, 75));
-		trenchA.setPreferredSize(new Dimension(150, 150));
-		trenchB.setPreferredSize(new Dimension(150, 150));
-
+		
+		
+		
+		pitA1.setBackground(Color.WHITE);
+		pitA2.setBackground(Color.WHITE);
+		pitA3.setBackground(Color.WHITE);
+		pitA4.setBackground(Color.WHITE);
+		pitA5.setBackground(Color.WHITE);
+		pitA6.setBackground(Color.WHITE);
+		pitB1.setBackground(Color.WHITE);
+		pitB2.setBackground(Color.WHITE);
+		pitB3.setBackground(Color.WHITE);
+		pitB4.setBackground(Color.WHITE);
+		pitB5.setBackground(Color.WHITE);
+		pitB6.setBackground(Color.WHITE);
+		
+		pitA1.setBorderPainted(false);
+		pitA2.setBorderPainted(false);
+		pitA3.setBorderPainted(false);
+		pitA4.setBorderPainted(false);
+		pitA5.setBorderPainted(false);
+		pitA6.setBorderPainted(false);
+		pitB1.setBorderPainted(false);
+		pitB2.setBorderPainted(false);
+		pitB3.setBorderPainted(false);
+		pitB4.setBorderPainted(false);
+		pitB5.setBorderPainted(false);
+		pitB6.setBorderPainted(false);
+		
+		pitA1.setIcon(img.getPitImg(0));
+		pitA2.setIcon(img.getPitImg(0));
+		pitA3.setIcon(img.getPitImg(0));
+		pitA4.setIcon(img.getPitImg(0));
+		pitA5.setIcon(img.getPitImg(0));
+		pitA6.setIcon(img.getPitImg(0));
+		pitB1.setIcon(img.getPitImg(0));
+		pitB2.setIcon(img.getPitImg(0));
+		pitB3.setIcon(img.getPitImg(0));
+		pitB4.setIcon(img.getPitImg(0));
+		pitB5.setIcon(img.getPitImg(0));
+		pitB6.setIcon(img.getPitImg(0));
+		
+		
+		trenchA.setIcon(img.getMancalaImg(0));
+		trenchB.setIcon(img.getMancalaImg(0));
+		
+		trenchA.setBackground(Color.WHITE);		
+		trenchB.setBackground(Color.WHITE);
+		
+		trenchA.setBorderPainted(false);
+		trenchB.setBorderPainted(false);
+		
 		JLabel label;
 		centerBoard.add(pitA1);
 		centerBoard.add(pitA2);
