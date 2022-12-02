@@ -5,5 +5,5 @@ import java.awt.Graphics2D;
 	 */
 	public interface MancalaBoard {
 		// draw method
-		void draw(Graphics2D g2);
+		void generateBoard();
 }
