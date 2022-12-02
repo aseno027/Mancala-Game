@@ -22,6 +22,8 @@ public class SquareBoard implements MancalaBoard{
 		this.width = width;
 		this.height = height;
 		
+		ImageFiles img = new ImageFiles();
+		
 		JFrame boardFrame = new JFrame();
 		BorderLayout layout = new BorderLayout(-10,-10);
 		boardFrame.setLayout(layout);
@@ -53,19 +55,35 @@ public class SquareBoard implements MancalaBoard{
 		
 		
 		JButton pitA1 = new JButton();
+		pitA1.setIcon(img.getPitImg(0));
 		JButton pitA2 = new JButton();
+		pitA2.setIcon(img.getPitImg(0));
 		JButton pitA3 = new JButton();
+		pitA3.setIcon(img.getPitImg(0));
 		JButton pitA4 = new JButton();
+		pitA4.setIcon(img.getPitImg(0));
 		JButton pitA5 = new JButton();
+		pitA5.setIcon(img.getPitImg(0));
 		JButton pitA6 = new JButton();
+		pitA6.setIcon(img.getPitImg(0));
 		JButton pitB1 = new JButton();
+		pitB1.setIcon(img.getPitImg(0));
 		JButton pitB2 = new JButton();
+		pitB2.setIcon(img.getPitImg(0));
 		JButton pitB3 = new JButton();
+		pitB3.setIcon(img.getPitImg(0));
 		JButton pitB4 = new JButton();
+		pitB4.setIcon(img.getPitImg(0));
 		JButton pitB5 = new JButton();
+		pitB5.setIcon(img.getPitImg(0));
 		JButton pitB6 = new JButton();
+		pitB6.setIcon(img.getPitImg(0));
+		
+		
 		JButton trenchA = new JButton();
+		trenchA.setIcon(img.getMancalaImg(0));
 		JButton trenchB = new JButton();
+		trenchB.setIcon(img.getMancalaImg(0));
 		
 		pitA1.setPreferredSize(new Dimension(75,75));
 		pitA2.setPreferredSize(new Dimension(75,75));
@@ -79,8 +97,8 @@ public class SquareBoard implements MancalaBoard{
 		pitB4.setPreferredSize(new Dimension(75,75));
 		pitB5.setPreferredSize(new Dimension(75,75));
 		pitB6.setPreferredSize(new Dimension(75,75));
-		trenchA.setPreferredSize(new Dimension(75,750));
-		trenchB.setPreferredSize(new Dimension(75,750));
+		trenchA.setPreferredSize(new Dimension(75,150));
+		trenchB.setPreferredSize(new Dimension(75,300));
 		
 		
 		aSquares.add(pitA1);
