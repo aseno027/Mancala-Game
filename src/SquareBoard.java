@@ -4,11 +4,25 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.geom.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 
 //CONCRETE STRATEGY
 public class SquareBoard implements MancalaBoard{
+	
+	private ArrayList<JButton> squareBoardButtons;
+	
+	//Constructor
+	public SquareBoard() {
+		squareBoardButtons = new ArrayList<>();
+	}
+	
+	//Accessor
+	public ArrayList<JButton> getButtons(){
+		return squareBoardButtons;
+	}
 
 	/**
 	 * Constructs a board.
@@ -54,6 +68,29 @@ public class SquareBoard implements MancalaBoard{
 		JButton pitB6 = new JButton();
 		JButton trenchA = new JButton();
 		JButton trenchB = new JButton();
+		
+		squareBoardButtons.add(pitA1);
+		squareBoardButtons.add(pitA2);
+		squareBoardButtons.add(pitA3);
+		squareBoardButtons.add(pitA4);
+		squareBoardButtons.add(pitA5);
+		squareBoardButtons.add(pitA6);
+		squareBoardButtons.add(pitB1);
+		squareBoardButtons.add(pitB2);
+		squareBoardButtons.add(pitB3);
+		squareBoardButtons.add(pitB4);
+		squareBoardButtons.add(pitB5);
+		squareBoardButtons.add(pitB6);
+		squareBoardButtons.add(trenchA);
+		squareBoardButtons.add(trenchA);
+		
+		for(int i = 0; i < squareBoardButtons.size(); i++) {
+			squareBoardButtons.get(i).addActionListener(event -> {
+				
+			});
+		}
+		
+		
 		
 		JLabel label;
 		centerBoard.add(pitA1);
@@ -114,6 +151,30 @@ public class SquareBoard implements MancalaBoard{
 		label.setFont(new Font("Monospaced", Font.BOLD, 30));
 		mancalaB.add(label, BorderLayout.NORTH);
 		mancalaB.add(trenchB, BorderLayout.CENTER);
+	}
+
+	@Override
+	public JButton[] getPitButtons() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void initialNumStone(int num) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public JButton getUndoButtons() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setMessage(String s) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
