@@ -3,7 +3,7 @@
 This is a implementation of the classic board game Mancala, built using Java. The game can be played by two players against each other.
 
 ## Features
-- Two player mode and AI mode
+- Two player mode
 - User-friendly interface
 - Undo and redo functionality
 - Game statistics tracking
@@ -19,7 +19,7 @@ This is a implementation of the classic board game Mancala, built using Java. Th
 3. Run the Main class, the game will start on a new window.
 
 ### Usage
-- The game can be played by two players against each other or against an AI.
+- The game can be played by two players against each other.
 - The user-friendly interface will guide you through the game.
 - You can undo and redo moves during the game
 - You can view the game statistics after the game.
